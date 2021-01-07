@@ -8,6 +8,7 @@
 <script>
 // require sources
 import _Quill from "quill";
+import { ImageResize } from "quill-image-resize-vue";
 const Quill = window.Quill || _Quill;
 const defaultOptions = {
   theme: "snow",
@@ -33,7 +34,6 @@ const defaultOptions = {
       // [{ align: [] }],
       ["clean"],
       ["link", "image"],
-
       // ["link", "image", "video"],
     ],
   },

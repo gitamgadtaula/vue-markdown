@@ -12,7 +12,9 @@
     "core-js": "^3.6.5",
     "marked": "^1.2.7",
     "nuxt": "^2.14.6",
-    "quill": "^1.3.7"
+    "quill": "^1.3.7",
+    "quill-image-resize": "^3.0.9",
+    "quill-image-resize-vue": "^1.0.4"
   },
   "devDependencies": {
     "@nuxtjs/vuetify": "^1.11.2"
