@@ -17,10 +17,6 @@ export default {
       { hid: "description", name: "description", content: "" }
     ],
     link: [
-      // {
-      //   rel: "stylesheet",
-      //   href: "https://cdn.quilljs.com/1.3.4/quill.bubble.css"
-      // },
       {
         rel: "stylesheet",
         href: "https://cdn.quilljs.com/1.3.4/quill.snow.css"
