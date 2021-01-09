@@ -7,13 +7,10 @@ export default class AtPeople {
     this.nodeList = null;
 
     this.cursorIndex = 0;
-    //成员列表的DOM
     this.atMerberListDom = null;
 
     if (options.list && options.list.length) {
-      //成员的总数
       this.totalLen = options.list.length;
-      //@成员列表初始化
       this.generatorList();
       this.quill.container.addEventListener(
         "keydown",
@@ -23,9 +20,6 @@ export default class AtPeople {
     }
   }
 
-  /**
-   * 生成@成员列表
-   */
   generatorList() {
     let listTtml = "<ul>";
     for (let i = 0; i < this.totalLen; i++) {
@@ -43,7 +37,6 @@ export default class AtPeople {
     this.atMerberListDom = divNde;
 
     this.nodeList = divNde.getElementsByTagName("li");
-    //第一个默认选中
     let firstNode = this.nodeList[0];
     firstNode.classList.add("selected");
 
@@ -52,9 +45,8 @@ export default class AtPeople {
     divNde.addEventListener("click", e => {
       if (e.target.tagName == "LI") {
         let selectedItem = JSON.parse(e.target.getAttribute("data-member"));
-        //插入@的名字
         this.insertMemberName(selectedItem);
-        //判断：是否存在点击插入一个成员执行的函数
+
         if (this.options.atOneMemberAction) {
           this.options.atOneMemberAction(selectedItem);
         }
@@ -62,10 +54,6 @@ export default class AtPeople {
     });
   }
 
-  /**
-   * 插入成员名称
-   * @param item
-   */
   insertMemberName(item) {
     this.quill.insertText(this.cursorIndex + 1, "@" + item.name + " ", {
       color: "#356ccb"
@@ -73,15 +61,12 @@ export default class AtPeople {
     this.quill.deleteText(this.cursorIndex, 1);
     this.quill.update();
     this.quill.setSelection(this.cursorIndex + item.name.length + 2);
-    this.quill.format("color", "#2c3e50");
+    this.quill.format("color", "");
 
     this.atMerberListDom.style.display = "none";
     this.index = 0;
   }
 
-  /**
-   * 获取成员列表的位置
-   */
   getPosition() {
     if (!this.quill.getSelection(true)) {
       return;
@@ -96,14 +81,11 @@ export default class AtPeople {
   }
 
   atPeople(e) {
-    //输入@键时
     if (e.code == "Digit2" && e.shiftKey) {
-      // 获取成员列表的位置
       this.getPosition();
-      //显示成员列表
+
       this.atMerberListDom.style.display = "block";
     } else {
-      //键盘操作：上移、下移
       if (
         (e.keyCode == "38" || e.keyCode == "40" || e.keyCode == "13") &&
         this.atMerberListDom.style.display == "block"
@@ -128,7 +110,7 @@ export default class AtPeople {
           case 13: //enter
             let selectedItem = this.options.list[this.index];
             this.insertMemberName(selectedItem);
-            //判断：是否存在点击插入一个成员执行的函数
+
             if (this.options.atOneMemberAction) {
               this.options.atOneMemberAction(selectedItem);
             }
@@ -144,8 +126,6 @@ export default class AtPeople {
   }
 
   /**
-   * 键盘操作时：
-   * 超过部分，设置父元素的srollTop
    * @param i
    */
   commonPart(i) {

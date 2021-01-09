@@ -9,80 +9,9 @@
 import _Quill from "quill";
 import { ImageResize } from "quill-image-resize-vue";
 import atPeople from "@/components/mention-people";
-
 const Quill = window.Quill || _Quill;
 Quill.register("modules/atPeople", atPeople);
 
-import "quill-mention-people/index.css";
-const atValues = [
-  { id: 1, value: "Fredrik Sundqvist" },
-  { id: 2, value: "Patrik Sjölin" },
-];
-const defaultOptions = {
-  theme: "snow",
-  boundary: document.body,
-  modules: {
-    imageResize: {
-      displaySize: true,
-    },
-    // mention: {
-    //   blotName: "mention",
-    //   allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
-    //   mentionDenotationChars: ["@", "#"],
-    //   source: function (searchTerm, renderItem, mentionChar) {
-    //     let values;
-    //     if (mentionChar === "@" || mentionChar === "#") {
-    //       values = atValues;
-    //     }
-    //     if (searchTerm.length === 0) {
-    //       renderItem(values, searchTerm);
-    //     } else {
-    //       const matches = [];
-    //       for (let i = 0; i < values.length; i++)
-    //         if (values[i].value.toLowerCase().indexOf(searchTerm.toLowerCase()))
-    //           matches.push(values[i]);
-    //       renderItem(matches, searchTerm);
-    //     }
-    //   },
-    // },
-    atPeople: {
-      list: [
-        { id: 1, name: "lmr" },
-        { id: 2, name: "merry" },
-        { id: 3, name: "box" },
-        { id: 4, name: "Carry" },
-        { id: 5, name: "Jony" },
-        { id: 6, name: "merry" },
-        { id: 7, name: "lala" },
-        { id: 8, name: "xiaoxiong" },
-        { id: 9, name: "herry" },
-        { id: 10, name: "jerry" },
-        { id: 11, name: "jackson" },
-      ],
-
-      // atOneMemberAction:this.atOneMemberAction
-    },
-    toolbar: [
-      ["bold", "italic", "underline", "strike"],
-      ["blockquote", "code-block"],
-      [{ header: 1 }, { header: 2 }],
-      [{ list: "ordered" }, { list: "bullet" }],
-      [{ script: "sub" }, { script: "super" }],
-      [{ indent: "-1" }, { indent: "+1" }],
-      [{ direction: "rtl" }],
-      [{ size: ["small", false, "large", "huge"] }],
-      [{ header: [1, 2, 3, 4, 5, 6, false] }],
-      [{ color: ["red"] }, { background: ["red"] }],
-      [{ font: [] }],
-      [{ align: [] }],
-      ["clean"],
-      ["link", "image", "video"],
-    ],
-  },
-  placeholder: "Insert text here ...",
-  readOnly: false,
-  // formats:['mention']
-};
 // pollfill
 if (typeof Object.assign != "function") {
   Object.defineProperty(Object, "assign", {
@@ -110,16 +39,12 @@ if (typeof Object.assign != "function") {
 // export
 export default {
   name: "quill-editor",
-  data() {
-    return {
-      _options: {},
-      _content: "",
-      defaultOptions,
-    };
-  },
   props: {
     content: String,
     value: String,
+    atPeople: {
+      type: Array,
+    },
     disabled: {
       type: Boolean,
       default: false,
@@ -135,6 +60,44 @@ export default {
       default: () => ({}),
     },
   },
+  data() {
+    return {
+      _options: {},
+      _content: "",
+      defaultOptions: {
+        theme: "snow",
+        boundary: document.body,
+        modules: {
+          imageResize: {
+            displaySize: true,
+          },
+          atPeople: {
+            list: this.atPeople,
+            atOneMemberAction: this.atOneMemberAction,
+          },
+          toolbar: [
+            ["bold", "italic", "underline", "strike"],
+            ["blockquote", "code-block"],
+            [{ header: 1 }, { header: 2 }],
+            [{ list: "ordered" }, { list: "bullet" }],
+            [{ script: "sub" }, { script: "super" }],
+            [{ indent: "-1" }, { indent: "+1" }],
+            [{ direction: "rtl" }],
+            [{ size: ["small", false, "large", "huge"] }],
+            [{ header: [1, 2, 3, 4, 5, 6, false] }],
+            [{ color: ["red"] }, { background: ["red"] }],
+            [{ font: [] }],
+            [{ align: [] }],
+            ["clean"],
+            ["link", "image", "video"],
+          ],
+        },
+        placeholder: "...",
+        readOnly: false,
+      },
+    };
+  },
+
   mounted() {
     this.initialize();
   },
@@ -143,7 +106,9 @@ export default {
     delete this.quill;
   },
   methods: {
-    // Init Quill instance
+    atOneMemberAction(item) {
+      this.$emit("at-people", item);
+    },
     initialize() {
       if (this.$el) {
         // Options
@@ -189,6 +154,9 @@ export default {
     },
   },
   watch: {
+    atPeople(value) {
+      // console.log(value);
+    },
     // Watch content change
     content(newVal, oldVal) {
       if (this.quill) {
@@ -218,71 +186,46 @@ export default {
       }
     },
   },
+  computed: {
+    newDefaultOptions() {
+      this.defaultOptions.modules.atPeople.list = this.atPeople;
+      return this.defaultOptions;
+    },
+  },
 };
 </script>
 
  <style>
-.ql-mention-list-container {
-  width: 270px;
-  border: 1px solid #f0f0f0;
-  border-radius: 4px;
-  /* background-color: #ffffff; */
-  box-shadow: 0 2px 12px 0 rgba(30, 30, 30, 0.08);
-  z-index: 9001;
-  background-color: #484242;
-  overflow: auto;
+.quill-editor {
+  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
+    0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
 }
-/* .v-application ul,
-.v-application ol {
-  padding-left: 0px;
+.ql-active {
+  background-color: #001 !important;
 }
-.ql-mention-loading {
-  line-height: 44px;
-  padding: 0 20px;
-  vertical-align: middle;
-  font-size: 16px;
+.ql-picker-options {
+  background-color: #000;
 }
 
-.ql-mention-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
+.ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-options {
+  border-color: #ccc;
+  background-color: #242222;
+}
+.ql-toolbar .ql-stroke {
+  fill: none;
+  stroke: #fff;
+  box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.2), 0 0 0 0 rgba(0, 0, 0, 0.14),
+    0 0 0 0 rgba(0, 0, 0, 0.12);
 }
 
-.ql-mention-list-item {
-  cursor: pointer;
-  line-height: 44px;
-  font-size: 16px;
-  padding: 0 20px;
-  vertical-align: middle;
+.ql-toolbar .ql-fill {
+  fill: #fff;
+  stroke: none;
 }
 
-.ql-mention-list-item.disabled {
-  cursor: auto;
+.ql-toolbar .ql-picker {
+  color: #fff;
 }
- */
-.ql-mention-list-item.selected {
-  /* background-color: #d3e1eb; */
-  border: 1px solid #f0f0f0;
-
-  background-color: #484242;
-  text-decoration: none;
-}
-
-/* .mention {
-  height: 24px;
-  width: 65px;
-  border-radius: 6px;
-  background-color: #d3e1eb;
-  padding: 3px 0;
-  margin-right: 2px;
-  user-select: all;
-}
-
-.mention > span {
-  margin: 0 3px;
-}  */
 
 .quill-at-member > ul {
   color: #020202;
