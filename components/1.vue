@@ -6,14 +6,18 @@
 </template>
 
 <script>
-import _Quill from "quill";
+// require sources
+import _Quill from "quill/core";
 import { ImageResize } from "quill-image-resize-vue";
-import atPeople from "@/components/mention-people";
-
+// import atPeople from "quill-mention-people";
+import { Mention, QuillMentionBlot } from "quill-mention";
 const Quill = window.Quill || _Quill;
-Quill.register("modules/atPeople", atPeople);
+import mention from "quill-mention";
+// Quill.register(QuillMentionBlot);
+// Quill.register("modules/atPeople", atPeople);
+Quill.register("modules/mention", mention);
+import "quill-mention"
 
-import "quill-mention-people/index.css";
 const atValues = [
   { id: 1, value: "Fredrik Sundqvist" },
   { id: 2, value: "Patrik Sjölin" },
@@ -25,43 +29,43 @@ const defaultOptions = {
     imageResize: {
       displaySize: true,
     },
-    // mention: {
-    //   blotName: "mention",
-    //   allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
-    //   mentionDenotationChars: ["@", "#"],
-    //   source: function (searchTerm, renderItem, mentionChar) {
-    //     let values;
-    //     if (mentionChar === "@" || mentionChar === "#") {
-    //       values = atValues;
-    //     }
-    //     if (searchTerm.length === 0) {
-    //       renderItem(values, searchTerm);
-    //     } else {
-    //       const matches = [];
-    //       for (let i = 0; i < values.length; i++)
-    //         if (values[i].value.toLowerCase().indexOf(searchTerm.toLowerCase()))
-    //           matches.push(values[i]);
-    //       renderItem(matches, searchTerm);
-    //     }
-    //   },
-    // },
-    atPeople: {
-      list: [
-        { id: 1, name: "lmr" },
-        { id: 2, name: "merry" },
-        { id: 3, name: "box" },
-        { id: 4, name: "Carry" },
-        { id: 5, name: "Jony" },
-        { id: 6, name: "merry" },
-        { id: 7, name: "lala" },
-        { id: 8, name: "xiaoxiong" },
-        { id: 9, name: "herry" },
-        { id: 10, name: "jerry" },
-        { id: 11, name: "jackson" },
-      ],
-
-      // atOneMemberAction:this.atOneMemberAction
+    mention: {
+      blotName: "mention",
+      allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
+      mentionDenotationChars: ["@", "#"],
+      source: function (searchTerm, renderItem, mentionChar) {
+        let values;
+        if (mentionChar === "@" || mentionChar === "#") {
+          values = atValues;
+        }
+        if (searchTerm.length === 0) {
+          renderItem(values, searchTerm);
+        } else {
+          const matches = [];
+          for (let i = 0; i < values.length; i++)
+            if (values[i].value.toLowerCase().indexOf(searchTerm.toLowerCase()))
+              matches.push(values[i]);
+          renderItem(matches, searchTerm);
+        }
+      },
     },
+    // atPeople: {
+    //   list: [
+    //     { id: 1, name: "lmr" },
+    //     { id: 2, name: "merry" },
+    //     { id: 3, name: "box" },
+    //     { id: 4, name: "Carry" },
+    //     { id: 5, name: "Jony" },
+    //     { id: 6, name: "merry" },
+    //     { id: 7, name: "lala" },
+    //     { id: 8, name: "xiaoxiong" },
+    //     { id: 9, name: "herry" },
+    //     { id: 10, name: "jerry" },
+    //     { id: 11, name: "jackson" },
+    //   ],
+
+    //   // atOneMemberAction:this.atOneMemberAction
+    // },
     toolbar: [
       ["bold", "italic", "underline", "strike"],
       ["blockquote", "code-block"],
@@ -232,7 +236,7 @@ export default {
   background-color: #484242;
   overflow: auto;
 }
-/* .v-application ul,
+.v-application ul,
 .v-application ol {
   padding-left: 0px;
 }
@@ -261,7 +265,7 @@ export default {
 .ql-mention-list-item.disabled {
   cursor: auto;
 }
- */
+
 .ql-mention-list-item.selected {
   /* background-color: #d3e1eb; */
   border: 1px solid #f0f0f0;
@@ -270,7 +274,7 @@ export default {
   text-decoration: none;
 }
 
-/* .mention {
+.mention {
   height: 24px;
   width: 65px;
   border-radius: 6px;
@@ -282,41 +286,5 @@ export default {
 
 .mention > span {
   margin: 0 3px;
-}  */
-
-.quill-at-member > ul {
-  color: #020202;
-}
-
-.quill-at-member {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 9999;
-  min-width: 120px;
-  display: none;
-}
-.quill-at-member > ul {
-  position: relative;
-  padding: 0;
-  margin: 0;
-  border: 1px solid #eee;
-  max-height: 200px;
-  overflow-y: auto;
-}
-.quill-at-member > ul > li {
-  position: relative;
-  padding: 10px 0;
-  margin: 0;
-  list-style: none;
-  background-color: #fff;
-  cursor: pointer;
-}
-
-.quill-at-member > ul > li.selected {
-  background: #eee;
-}
-.quill-at-member > ul > li:hover {
-  background: #eee;
 }
 </style>

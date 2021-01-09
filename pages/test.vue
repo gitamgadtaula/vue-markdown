@@ -26,7 +26,7 @@ export default {
       editorOption: {
         theme: "snow",
       },
-      content: "<h2>I'm vue-quill-editor example</h2>",
+      content: "",
     };
   },
   methods: {
