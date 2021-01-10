@@ -1,86 +1,104 @@
 <template>
-  <div style="background-color: ">
+  <section class="container">
     <client-only>
       <quill-editor
-        ref="quillEditor"
-        class="editor"
+        ref="editor"
         v-model="content"
         :options="editorOption"
-        :atPeople="atPeople"
-        @at-people="atPeopleSelect"
         @blur="onEditorBlur($event)"
         @focus="onEditorFocus($event)"
         @ready="onEditorReady($event)"
       />
-
-      <!-- <div class="content ql-editor" v-html="content">
-      Use this to display the content wherever you want
-    </div> -->
     </client-only>
-  </div>
+  </section>
 </template>
+
 <script>
-const atPeople = [
-  { id: 1, name: "gitam" },
-  { id: 2, name: "merry" },
-  { id: 3, name: "box" },
-  { id: 4, name: "Carry" },
-  { id: 5, name: "Jony" },
-  { id: 6, name: "merry" },
-  { id: 7, name: "lala" },
-  { id: 8, name: "xiaoxiong" },
-  { id: 9, name: "herry" },
-  { id: 10, name: "jerry" },
-  { id: 11, name: "jackson" },
-];
-// import QuillEditor from "@/components/MarkDown";
+// import Quill from "quill";
+// import hljs from "highlight.js";
+// import { ImageResize } from "quill-image-resize-module";
+// Quill.register("modules/imageResize", ImageResize);
+// import "highlight.js/styles/darcula.css";
+// hljs.configure({
+//   languages: [
+//     "java",
+//     "dart",
+//     "javascript",
+//     "ruby",
+//     "python",
+//     "rust",
+//     "css",
+//     "php",
+//     "html",
+//   ],
+// });
 export default {
-  name: "",
-  components: {
-    // QuillEditor,
-    QuillEditor: () => import("@/components/MarkDown"),
-  },
+  name: "quill-example-nuxt",
   data() {
     return {
-      atPeople,
-      tab: null,
-      inputText: "",
+      content: "<p>I am Example</p>",
       editorOption: {
+        // Some Quill options...
         theme: "snow",
+        modules: {
+          // imageResize: {
+          //   displaySize: true,
+          // },
+          // syntax: {
+          //   highlight: (text) => hljs.highlightAuto(text).value,
+          // },
+          toolbar: [
+            ["bold", "italic", "underline", "strike"],
+            ["blockquote", "code-block"],
+            [{ header: 1 }, { header: 2 }],
+            [{ list: "ordered" }, { list: "bullet" }],
+            [{ script: "sub" }, { script: "super" }],
+            [{ indent: "-1" }, { indent: "+1" }],
+            [{ direction: "rtl" }],
+            [{ size: ["small", false, "large", "huge"] }],
+            [{ header: [1, 2, 3, 4, 5, 6, false] }],
+            [{ color: ["red"] }, { background: ["red"] }],
+            [{ font: [] }],
+            [{ align: [] }],
+            ["clean"],
+            ["link", "image", "video"],
+          ],
+        },
       },
-      content: "",
     };
   },
+  mounted() {
+    // console.log('App inited, the Quill instance object is:', this.$refs.editor.quill)
+    // setTimeout(() => {
+    //   this.content = 'I was changed!'
+    // }, 3000)[]
+    if (process.client) {
+      Quill = require("quill");
+    }
+  },
   methods: {
-    handleChange(value) {
-      this.inputText = value;
+    onEditorBlur(editor) {
+      console.log("editor blur!", editor);
     },
-    atPeopleSelect(item) {
-      console.log("selected people ");
-      console.log(item);
+    onEditorFocus(editor) {
+      console.log("editor focus!", editor);
     },
-    onEditorBlur(quill) {
-      // console.log("editor blur!", quill);
-    },
-    onEditorFocus(quill) {
-      // console.log("editor focus!", quill);
-    },
-    onEditorReady(quill) {
-      // console.log("editor ready!", quill);
+    onEditorReady(editor) {
+      console.log("editor ready!", editor);
     },
   },
-
-  computed: {
-    editor() {
-      return this.$refs.quillEditor.quill;
-    },
-    compiledMarkdown() {
-      return marked(this.inputText, { sanitize: true });
-    },
-  },
-  head() {},
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
+.container {
+  width: 60%;
+  margin: 0 auto;
+  padding: 50px 0;
+  .quill-editor {
+    min-height: 200px;
+    max-height: 400px;
+    overflow-y: auto;
+  }
+}
 </style>

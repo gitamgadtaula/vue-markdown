@@ -1,8 +1,8 @@
 import colors from "vuetify/es5/util/colors";
-
+import webpack from "webpack";
 export default {
   // Disable server-side rendering (https://go.nuxtjs.dev/ssr-mode)
-  ssr: false,
+  ssr: true,
 
   // Target (https://go.nuxtjs.dev/config-target)
   target: "static",
@@ -16,24 +16,20 @@ export default {
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { hid: "description", name: "description", content: "" }
     ],
-    link: [
-      {
-        rel: "stylesheet",
-        href: "https://cdn.quilljs.com/1.3.4/quill.snow.css"
-      },
-      {
-        rel: "stylesheet",
-        href: "https://cdn.quilljs.com/1.3.4/quill.core.css"
-      },
-      { rel: "icon", type: "image/x-icon", href: "/favicon.ico" }
-    ]
+    link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }]
   },
 
   // Global CSS (https://go.nuxtjs.dev/config-css)
-  css: [],
+  css: [
+    "quill/dist/quill.core.css",
+    // for snow theme
+    "quill/dist/quill.snow.css",
+    // for bubble theme
+    "quill/dist/quill.bubble.css"
+  ],
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
-  plugins: [],
+  plugins: [{ src: "~plugins/nuxt-quill-plugin", ssr: true }],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
   components: true,
@@ -67,5 +63,12 @@ export default {
   },
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
-  build: {}
+  build: {
+    plugins: [
+      new webpack.ProvidePlugin({
+        "window.Quill": "quill/dist/quill.js",
+        Quill: "quill/dist/quill.js"
+      })
+    ]
+  }
 };
