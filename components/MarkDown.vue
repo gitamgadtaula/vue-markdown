@@ -11,6 +11,21 @@ import { ImageResize } from "quill-image-resize-vue";
 import atPeople from "@/components/mention-people";
 const Quill = window.Quill || _Quill;
 Quill.register("modules/atPeople", atPeople);
+import hljs from "highlight.js";
+import "highlight.js/styles/darcula.css";
+hljs.configure({
+  languages: [
+    "java",
+    "dart",
+    "javascript",
+    "ruby",
+    "python",
+    "rust",
+    "css",
+    "php",
+    "html",
+  ],
+});
 
 // pollfill
 if (typeof Object.assign != "function") {
@@ -68,6 +83,9 @@ export default {
         theme: "snow",
         boundary: document.body,
         modules: {
+          syntax: {
+            highlight: (text) => hljs.highlightAuto(text).value,
+          },
           imageResize: {
             displaySize: true,
           },
@@ -200,6 +218,10 @@ export default {
   box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
     0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
 }
+.ql-container {
+  font-size: 20px;
+}
+
 .ql-active {
   background-color: #001 !important;
 }

@@ -1,20 +1,22 @@
 <template>
   <div style="background-color: ">
-    <quill-editor
-      ref="quillEditor"
-      class="editor"
-      v-model="content"
-      :options="editorOption"
-      :atPeople="atPeople"
-      @at-people="atPeopleSelect"
-      @blur="onEditorBlur($event)"
-      @focus="onEditorFocus($event)"
-      @ready="onEditorReady($event)"
-    />
+    <client-only>
+      <quill-editor
+        ref="quillEditor"
+        class="editor"
+        v-model="content"
+        :options="editorOption"
+        :atPeople="atPeople"
+        @at-people="atPeopleSelect"
+        @blur="onEditorBlur($event)"
+        @focus="onEditorFocus($event)"
+        @ready="onEditorReady($event)"
+      />
 
-    <!-- <div class="content ql-editor" v-html="content">
+      <!-- <div class="content ql-editor" v-html="content">
       Use this to display the content wherever you want
     </div> -->
+    </client-only>
   </div>
 </template>
 <script>
@@ -31,11 +33,12 @@ const atPeople = [
   { id: 10, name: "jerry" },
   { id: 11, name: "jackson" },
 ];
-import QuillEditor from "@/components/MarkDown";
+// import QuillEditor from "@/components/MarkDown";
 export default {
   name: "",
   components: {
-    QuillEditor,
+    // QuillEditor,
+    QuillEditor: () => import("@/components/MarkDown"),
   },
   data() {
     return {
