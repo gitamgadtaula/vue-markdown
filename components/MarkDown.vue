@@ -220,6 +220,12 @@ export default {
 }
 .ql-container {
   font-size: 20px;
+  border: 0;
+  background-color: #1e1e1e;
+}
+.ql-toolbar {
+  border: 0;
+  background-color: #272727;
 }
 
 .ql-active {

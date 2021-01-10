@@ -1,18 +1,19 @@
 <template>
   <div style="background-color: ">
     <client-only>
-      <quill-editor
-        ref="quillEditor"
-        class="editor"
-        v-model="content"
-        :options="editorOption"
-        :atPeople="atPeople"
-        @at-people="atPeopleSelect"
-        @blur="onEditorBlur($event)"
-        @focus="onEditorFocus($event)"
-        @ready="onEditorReady($event)"
-      />
-
+      <v-card>
+        <quill-editor
+          ref="quillEditor"
+          class="editor"
+          v-model="content"
+          :options="editorOption"
+          :atPeople="atPeople"
+          @at-people="atPeopleSelect"
+          @blur="onEditorBlur($event)"
+          @focus="onEditorFocus($event)"
+          @ready="onEditorReady($event)"
+        />
+      </v-card>
       <!-- <div class="content ql-editor" v-html="content">
       Use this to display the content wherever you want
     </div> -->
