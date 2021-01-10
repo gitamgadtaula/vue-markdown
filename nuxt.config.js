@@ -2,7 +2,7 @@ import colors from "vuetify/es5/util/colors";
 import webpack from "webpack";
 export default {
   // Disable server-side rendering (https://go.nuxtjs.dev/ssr-mode)
-  ssr: true,
+  ssr: false,
 
   // Target (https://go.nuxtjs.dev/config-target)
   target: "static",
