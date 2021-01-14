@@ -17,6 +17,9 @@
       <!-- <div class="content ql-editor" v-html="content">
       Use this to display the content wherever you want
     </div> -->
+      <div v-html="content">
+        <pre v-highlightjs="content"><code class="javascript"></code></pre>
+      </div>
     </client-only>
   </div>
 </template>
