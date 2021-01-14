@@ -26,6 +26,17 @@ hljs.configure({
     "html",
   ],
 });
+import Emoji from "quill-emoji/dist/quill-emoji";
+import "quill-emoji/dist/quill-emoji.css";
+Quill.register(
+  {
+    "formats/emoji": Emoji.EmojiBlot,
+    "modules/short_name_emoji": Emoji.ShortNameEmoji,
+    "modules/toolbar_emoji": Emoji.ToolbarEmoji,
+    "modules/textarea_emoji": Emoji.TextAreaEmoji,
+  },
+  true
+);
 
 // pollfill
 if (typeof Object.assign != "function") {
@@ -83,6 +94,9 @@ export default {
         theme: "snow",
         boundary: document.body,
         modules: {
+          toolbar_emoji: true,
+          short_name_emoji: true,
+          textarea_emoji: true,
           syntax: {
             highlight: (text) => hljs.highlightAuto(text).value,
           },
@@ -93,22 +107,28 @@ export default {
             list: this.atPeople,
             atOneMemberAction: this.atOneMemberAction,
           },
-          toolbar: [
-            ["bold", "italic", "underline", "strike"],
-            ["blockquote", "code-block"],
-            [{ header: 1 }, { header: 2 }],
-            [{ list: "ordered" }, { list: "bullet" }],
-            [{ script: "sub" }, { script: "super" }],
-            [{ indent: "-1" }, { indent: "+1" }],
-            [{ direction: "rtl" }],
-            [{ size: ["small", false, "large", "huge"] }],
-            [{ header: [1, 2, 3, 4, 5, 6, false] }],
-            [{ color: ["red"] }, { background: ["red"] }],
-            [{ font: [] }],
-            [{ align: [] }],
-            ["clean"],
-            ["link", "image", "video"],
-          ],
+          toolbar: {
+            container: [
+              ["bold", "italic", "underline", "strike"],
+              ["blockquote", "code-block"],
+              [{ header: 1 }, { header: 2 }],
+              [{ list: "ordered" }, { list: "bullet" }],
+              [{ script: "sub" }, { script: "super" }],
+              [{ indent: "-1" }, { indent: "+1" }],
+              [{ direction: "rtl" }],
+              [{ size: ["small", false, "large", "huge"] }],
+              [{ header: [1, 2, 3, 4, 5, 6, false] }],
+              [{ color: ["red"] }, { background: ["red"] }],
+              [{ font: [] }],
+              [{ align: [] }],
+              ["clean"],
+              ["link", "image", "video"],
+              ["emoji"],
+            ],
+            handlers: {
+              emoji: function () {},
+            },
+          },
         },
         placeholder: "...",
         readOnly: false,
